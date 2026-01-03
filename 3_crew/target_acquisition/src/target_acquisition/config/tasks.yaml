@@ -1,0 +1,78 @@
+analyze_market_dynamics:
+  description: >
+    Analyze market movements and industry shifts for the {{industry}} industry,
+    focusing on the {{sector}} sector within {{geography}} over the
+    {{time_horizon}} time horizon.
+  expected_output: >
+    A structured analysis identifying opportunity zones, risk areas, timing
+    windows, and implications for target definition.
+  agent: market_dynamics_agent
+  output_file: output/market_dynamics_report.json
+
+define_hpt_criteria:
+  description: >
+    Define Ideal Customer Profiles for the {{industry}} industry, specifically
+  within the {{sector}} sector.
+  expected_output: >
+    A clear and structured definition of ICP and TSS used to qualify and screen
+    prospects.
+  agent: hpt_definition_agent
+  context:
+    - analyze_market_dynamics
+  output_file: output/hpt_criteria_definition.json
+
+discover_prospects:
+  description: >
+    Detect potential prospects that broadly match the defined ICP, prioritizing
+    new and previously undiscovered candidates.
+  expected_output: >
+    A list of candidate prospects with basic identifying information.
+  agent: prospect_discovery_agent
+  context:
+    - define_hpt_criteria
+  output_file: output/prospect_discovery.json
+
+research_prospects:
+  description: >
+    Conduct detailed intelligence research on detected prospects, including
+    decision-makers, buying signals, risks, and engagement indicators.
+  expected_output: >
+    Comprehensive intelligence profiles suitable for prioritization and tracking.
+  agent: prospect_intelligence_agent
+  context:
+    - discover_prospects
+  output_file: output/prospect_research.json
+
+prioritize_hpts:
+  description: >
+    Analyze prospect intelligence and produce a ranked High-Payoff Target List
+    (HPTL) with justification and confidence scoring.
+  expected_output: >
+    A prioritized HPTL with rationale for inclusion and exclusion.
+  agent: hpt_prioritization_agent
+  context:
+    - research_prospects
+  output_file: output/hpt_prioritization.json
+
+prepare_engagement:
+  description: >
+    Develop engagement guidance and execution-ready handoff materials for approved
+    high-payoff targets.
+  expected_output: >
+    Sales-ready engagement briefs and recommended approaches for each HPT.
+  agent: engagement_preparation_agent
+  context:
+    - prioritize_hpts
+  output_file: output/engagement_preparation.json
+  
+assess_targeting_effectiveness:
+  description: >
+    Evaluate the effectiveness of the targeting and engagement process and provide
+    recommendations for refinement.
+  expected_output: >
+    An assessment report with insights, performance metrics, and improvement
+    recommendations.
+  agent: assessment_agent
+  context:
+    - prepare_engagement
+  output_file: output/targeting_effectiveness_assessment.json
